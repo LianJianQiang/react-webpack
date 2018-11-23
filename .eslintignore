@@ -1,0 +1,2 @@
+# 忽略文件列表
+# /node_modules/* and /bower_components/* ignored by default
