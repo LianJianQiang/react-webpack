@@ -19,6 +19,17 @@ module.exports = merge(common.baseConfig, {
             common.scssRules
         ]
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /lodash/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
     plugins: [
         // 每次打包前先清理dist目录
         new CleanWebpackPlugin(['dist'], {

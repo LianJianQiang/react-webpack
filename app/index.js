@@ -1,14 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import styles from './index.scss';
+import Router from './router';
 
-ReactDOM.render(
-    <div className={styles.root}>hello world</div>,
-    document.getElementById('app'),
-    () => {
-    },
-);
+const render = (Component) => {
+    ReactDOM.render(
+        <Component/>,
+        document.getElementById('app'),
+        () => {
+        }
+    );
+};
+
+
+window.onload = function () {
+    // load app
+    render(Router);
+};
 
 // 设置所有模块接受热更新
 if (module.hot) {

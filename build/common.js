@@ -21,9 +21,12 @@ let baseConfig = {
         publicPath: `${publicPath}`
     },
     resolve: {
+        extensions: ['.js', '.jsx', ".ts", ".tsx"],
         // 定义别名
         alias: {
             common: `${srcPath}/common`,
+            components: `${srcPath}/components`,
+            containers: `${srcPath}/containers`,
             static: `${srcPath}/static`,
             styles: `${srcPath}/styles`,
             utils: `${srcPath}/utils`,
@@ -139,7 +142,7 @@ exports.scssRules = {
             options: {
                 modules: true,
                 camelCase: true,
-                localIdentName: '[local]__[hash:base64:5]',
+                localIdentName: '[local]_[hash:base64:5]',
                 minimize: true
             }
         },

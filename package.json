@@ -10,8 +10,8 @@
         "server": "node server.js",
         "postinstall": "npm run dll",
         "dll": "webpack --config ./build/dll.js",
-        "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./build/dev.js",
-        "build": "cross-env NODE_ENV=production webpack --config ./build/prod.js"
+        "dev": "cross-env NODE_ENV=development webpack-dev-server --env=dev",
+        "dist": "cross-env NODE_ENV=production webpack --env=dist"
     },
     "author": "jq.Lian",
     "license": "ISC",
@@ -26,6 +26,7 @@
         "babel-preset-mobx": "^2.0.0",
         "clean-webpack-plugin": "^1.0.0",
         "copy-webpack-plugin": "^4.6.0",
+        "cross-env": "^5.2.0",
         "css-loader": "^1.0.1",
         "eslint": "^5.9.0",
         "eslint-config-airbnb": "^17.1.0",
