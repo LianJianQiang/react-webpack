@@ -20,7 +20,7 @@ module.exports = {
     },
     output: {
         path: resolvePath('lib'),
-        filename: '[name].[chunkhash:8].js',
+        filename: '[name]_[chunkhash:8].js',
         library: '[name]_[chunkhash:8]'
     },
     plugins: [

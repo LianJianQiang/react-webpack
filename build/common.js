@@ -1,22 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { srcPath, isDev, publicPath } = require('./default');
-const manifest = require('../manifest.json');
 
-const _venderName = manifest.name.split('_');
-const venderName = _venderName[0] + '.' + _venderName[1];
 
 let baseConfig = {
-    entry: {
-        app: './app/index.js'
-    },
+    // entry: [
+    //     '@babel/polyfill',
+    //     path.join(__dirname, '../app/index')
+    // ],
     output: {
         path: path.resolve(__dirname, '../dist'),
-        filename: isDev ? '[name].js' : '[name].[chunkhash].js',
+        filename: '[name].js',
         // chunkFilename: "[name].chunk.js",
         publicPath: `${publicPath}`
     },
@@ -41,6 +38,12 @@ let baseConfig = {
     module: {
         rules: [
             {
+                test: /\.(js|jsx)$/,
+                include: srcPath,
+                enforce: "pre",
+                loader: 'babel-loader'
+            },
+            {
                 test: /\.html$/,
                 loader: 'html-loader',
                 options: {
@@ -48,42 +51,39 @@ let baseConfig = {
                 }
             },
             {
-                test: /\.(js|jsx)$/,
-                include: srcPath,
-                use: [
-                    {
-                        loader: 'babel-loader'
-                    }
-                ]
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            },
-            {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 8192, // <= 8kb的图片base64内联
-                    name: '[name].[hash:8].[ext]',
-                    outputPath: 'images/'
+                    limit: 10000,
+                    mimetype: 'application/font-woff',
+                    name: isDev ? '[name].[ext]' : 'assets/css/font/[name]_[hash:7].[ext]'
                 }
             },
             {
-                test: /\.(svg|eot|ttf|woff|woff2)$/,
+                test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "file-loader",
+                options: {
+                    name: isDev ? '[name].[ext]' : 'assets/css/font/[name]_[hash:7].[ext]'
+                }
+            },
+            {
+                test: /\.(png|jpg|gif|svg|webp)$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 8192, // <= 8kb的base64内联
-                    name: '[name].[hash:8].[ext]',
-                    outputPath: 'fonts/'
+                    limit: 8192,
+                    name: isDev ? '[name].[ext]' : 'assets/img/[name]_[hash:7].[ext]'
                 }
+            },
+            {
+                test: /\.(mp4|ogg)$/,
+                loader: 'file-loader',
             }
         ]
     },
 
     plugins: [
         new webpack.DllReferencePlugin({
-            context: __dirname,
+            context: path.join(__dirname, '/../'),
             manifest: require('../manifest.json')
         }),
 
@@ -91,44 +91,54 @@ let baseConfig = {
         //     children: true,
         //     minChunks: 2
         // }),
-        new HtmlWebpackPlugin({
-            title: 'Test',
-            filename: './index.html',
-            template: './app/index.html',
-            favicon: './app/favicon.ico',
-            hash: true
-        }),
-
-        new CopyWebpackPlugin([
-            { from: 'lib', to: '' }
-        ]),
-
-        new HtmlWebpackIncludeAssetsPlugin({
-            assets: [`${venderName}.js`],
-            append: false
-        })
-        // new HtmlWebpackIncludeAssetsPlugin({
-        //     assets: ['env-config.js'],
-        //     append: false,
+        // new HtmlWebpackPlugin({
+        //     title: 'Test',
+        //     // filename: './index.html',
+        //     template: './app/index.html',
+        //     favicon: './app/favicon.ico',
         //     hash: true
         // }),
-        // new HtmlWebpackHarddiskPlugin()
-        // new webpack.DefinePlugin({
-        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-        // })
-        // new BundleAnalyzerPlugin({
-        //     analyzerMode: 'server', // static/disabled
-        //     analyzerHost: '127.0.0.1',
-        //     analyzerPort: '8888'
-        // })
 
-
-        // new webpack.ProvidePlugin({
-        //     _: 'lodash'
-        // }),
-        // new webpack.HashedModuleIdsPlugin()
+        // new CopyWebpackPlugin([
+        //     { from: 'lib', to: '' }
+        // ]),
+        //
+        // new HtmlWebpackIncludeAssetsPlugin({
+        //     assets: [`${venderName}.js`],
+        //     append: false
+        // })
     ]
 };
+
+
+exports.cssRules = {
+    test: /\.css$/,
+    use: [
+        {
+            loader: 'style-loader'
+        },
+        {
+            loader: 'css-loader'
+        }
+    ]
+};
+
+exports.lessRules = {
+    test: /\.less/,
+    // include: /node_modules/,
+    use: [
+        {
+            loader: 'style-loader'
+        },
+        {
+            loader: 'css-loader'
+        },
+        {
+            loader: 'less-loader'
+        }
+    ]
+};
+
 
 exports.scssRules = {
     test: /\.scss$/,
