@@ -10,6 +10,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const { resolvePath } = require('./default');
 const common = require('./common');
@@ -26,10 +27,6 @@ const handleCSSUse = (use) => {
 };
 
 let config = merge(common.baseConfig, {
-    entry: [
-        '@babel/polyfill',
-        path.join(__dirname, '../app/index')
-    ],
     output: {
         path: path.join(__dirname, '/../dist'),
         filename: 'assets/js/app_[chunkhash:8].js',
@@ -52,6 +49,28 @@ let config = merge(common.baseConfig, {
                 test: /\.scss/,
                 exclude: /node_modules/,
                 use: handleCSSUse(common.scssRules.use)
+                //     ExtractTextPlugin.extract({
+                //     fallback: {
+                //         loader: 'style-loader',
+                //     },
+                //     use: [
+                //         {
+                //             loader: "css-loader",
+                //             options: {
+                //                 modules: true,
+                //                 camelCase: true,
+                //                 localIdentName: '[local]_[hash:base64:5]',
+                //                 minimize: true
+                //             }
+                //         },
+                //         {
+                //             loader: 'postcss-loader',    // 自动添加css前缀
+                //         },
+                //         {
+                //             loader: "sass-loader"
+                //         }
+                //     ]
+                // })
             }
         ]
     },
@@ -68,9 +87,13 @@ let config = merge(common.baseConfig, {
             root: resolvePath('./')     // 将目录指向根目录
         }),
 
+        // new ExtractTextPlugin({
+        //     filename: '[name].css',
+        // }),
+
         new HtmlWebpackPlugin({
-            template: resolvePath('app/index.html'),
-            favicon: resolvePath('app/favicon.ico'),
+            template: resolvePath('src/index.html'),
+            favicon: resolvePath('src/favicon.ico'),
             hash: true,
             minify: {
                 removeComments: true,
@@ -128,20 +151,15 @@ let config = merge(common.baseConfig, {
             }),
             new OptimizeCSSAssetsPlugin({})
         ],
-        // splitChunks: {
-        //     cacheGroups: {
-        //         vonders: {
-        //             test: /lodash|moment|echarts|antd/,
-        //             name: 'vonders',
-        //             chunks: 'all'
-        //         },
-        //         ag: {
-        //             test: /ag-grid-react|ag-grid-enterprise/,
-        //             name: 'ag',
-        //             chunks: 'all'
-        //         }
-        //     }
-        // }
+        splitChunks: {
+            cacheGroups: {
+                vonders: {
+                    test: /lodash/,
+                    name: 'vonders',
+                    chunks: 'all'
+                },
+            }
+        }
     }
 });
 module.exports = config;

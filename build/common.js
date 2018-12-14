@@ -1,16 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { srcPath, isDev, publicPath } = require('./default');
 
 
 let baseConfig = {
-    // entry: [
-    //     '@babel/polyfill',
-    //     path.join(__dirname, '../app/index')
-    // ],
+    entry: [
+        '@babel/polyfill',
+        path.join(__dirname, '../src/index.js')
+    ],
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].js',
@@ -153,7 +153,8 @@ exports.scssRules = {
                 modules: true,
                 camelCase: true,
                 localIdentName: '[local]_[hash:base64:5]',
-                minimize: true
+                minimize: true,
+                sourceMap: !isDev
             }
         },
         {

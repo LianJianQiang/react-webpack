@@ -9,6 +9,6 @@ export default function (app) {
 
     app.get('*', (req, res) => {
         res.status('200');
-        res.send(renderHtml(resolve(clientBuildPath, 'server.html'), req));
+        res.send(renderHtml(resolve(clientBuildPath, 'index.html'), req));
     });
 }

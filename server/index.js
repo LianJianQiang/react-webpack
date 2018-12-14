@@ -13,17 +13,17 @@ require('@babel/register')({
             "module-resolver",
             {
                 "alias": {
-                    "common": resolveUrl("../app/common/"),
-                    "page/common": resolveUrl("../app/containers/page/common/"),
-                    "config": resolveUrl("../app/_config/"),
-                    "_config": resolveUrl("../app/_config/"),
-                    "components": resolveUrl("../app/components/"),
-                    "containers": resolveUrl("../app/containers/"),
-                    "images": resolveUrl("../app/images/"),
-                    "styles": resolveUrl("../app/styles/"),
-                    "utils": resolveUrl("../app/utils/"),
+                    "common": resolveUrl("../src/common/"),
+                    "page/common": resolveUrl("../src/containers/page/common/"),
+                    "config": resolveUrl("../src/_config/"),
+                    "_config": resolveUrl("../src/_config/"),
+                    "components": resolveUrl("../src/components/"),
+                    "containers": resolveUrl("../src/containers/"),
+                    "images": resolveUrl("../src/images/"),
+                    "styles": resolveUrl("../src/styles/"),
+                    "utils": resolveUrl("../src/utils/"),
+                    "router": resolveUrl("../src/router/"),
                     "server": resolveUrl("../server/"),
-                    "app": resolveUrl("../app/"),
                     "react/lib/ReactMount": "react-dom/lib/ReactMount"
                 }
             }

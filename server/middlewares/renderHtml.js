@@ -3,9 +3,9 @@ import cheerio from 'cheerio';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import App from 'app/router';
 import { StaticRouter } from 'react-router';
 
+import App from 'router';
 
 const renderHtml = (path, req) => {
     const context = {};
@@ -18,10 +18,10 @@ const renderHtml = (path, req) => {
     const HTML_TEMPLATE = fs.readFileSync(path).toString();
 
     const $template = cheerio.load(HTML_TEMPLATE, { decodeEntities: false });
-    $template('#app').html(`${renderToString(componentHTML)}`);
+    $template('#app').html(`<div>${renderToString(componentHTML)}</div>`);      // TODO renderToString外面必须用标签包裹，要不会造成class丢失，什么bug
 
-    console.log('-------------- logger --------------');
-    console.log(req.url);
+    // console.log('-------------- logger --------------');
+    // console.log(req.url);
     // console.log($template('#app').html());
     return $template.html();
 };

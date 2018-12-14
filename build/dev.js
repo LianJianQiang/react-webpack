@@ -4,6 +4,7 @@ const merge = require('webpack-merge');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 const common = require('./common.js');
 const { resolvePath } = require('./default');
@@ -31,8 +32,9 @@ let config = merge(common.baseConfig, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: resolvePath('app/index.html'),
-            favicon: resolvePath('app/favicon.ico'),
+            alwaysWriteToDisk: true,
+            template: resolvePath('src/index.html'),
+            favicon: resolvePath('src/favicon.ico'),
         }),
 
         new CopyWebpackPlugin([
@@ -47,6 +49,10 @@ let config = merge(common.baseConfig, {
             assets: [`${libName}.js`],
             append: false
         }),
+
+        new HtmlWebpackHarddiskPlugin({
+            outputPath: path.resolve(__dirname, '..', 'build-dev')
+        })
 
         // new webpack.HotModuleReplacementPlugin(),       // TODO ?
         // new webpack.NoEmitOnErrorsPlugin()              // TODO ?
