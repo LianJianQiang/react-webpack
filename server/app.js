@@ -1,15 +1,7 @@
-import { resolve } from "path";
-
-// const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// const webpack = require('webpack');
-// const webpackDevMiddleware = require('webpack-dev-middleware');
-// const webpackHotMiddleware = require('webpack-hot-middleware');
 
-// const webpackDevConfig = require('../build/dev');
-// const renderHtml = require('./middlewares/renderHtml');
 const development = require('./middlewares/development').default;
 const production = require('./middlewares/production').default;
 

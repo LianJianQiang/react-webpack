@@ -20,9 +20,6 @@ const renderHtml = (path, req) => {
     const $template = cheerio.load(HTML_TEMPLATE, { decodeEntities: false });
     $template('#app').html(`<div>${renderToString(componentHTML)}</div>`);      // TODO renderToString外面必须用标签包裹，要不会造成class丢失，什么bug
 
-    // console.log('-------------- logger --------------');
-    // console.log(req.url);
-    // console.log($template('#app').html());
     return $template.html();
 };
 
